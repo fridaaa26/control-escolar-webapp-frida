@@ -13,14 +13,13 @@
         <div class="row mt-3 mb-5" style="text-align: center;">
           <div class="col-12">
             <div class="alert alert-primary" role="alert">
-              <span class="title-table">Análisis De Materias</span>
+              <span class="title-table">Análisis De Usuarios</span>
             </div>
           </div>
         </div>
-        <!-- Gráficas de materias registradas -->
+        <!-- Gráficas de usuarios registradas -->
         <div class="graph-section">
           <div class="graph">
-            <!-- Se muestra la gráfica tipo histograma de las materias registradas en el sistema. -->
             <canvas
               baseChart
               type="line"
@@ -29,7 +28,6 @@
               [options]="lineChartOption"></canvas>
           </div>
           <div class="graph">
-            <!-- Se muestra la gráfica tipo barras de los eventos académicos registrados en el sistema. -->
             <canvas
               baseChart
               type="bar"
@@ -38,14 +36,7 @@
               [options]="barChartOption"></canvas>
           </div>
         </div>
-        <!-- Gráficas de usuarios - segunda sección de gráficas -->
-        <div class="row mt-3 mb-5" style="text-align: center;">
-          <div class="col-12">
-            <div class="alert alert-primary" role="alert">
-              <span class="title-table">Análisis De Usuarios</span>
-            </div>
-          </div>
-        </div>
+
         <!-- Gráficas de pastel y de dona -->
         <div class="user-section">
           <div class="graph">
