@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AdministradoresService } from 'src/app/service/administradores.service';
 import { FacadeService } from 'src/app/service/facade.service';
+import { MatDialog } from '@angular/material/dialog';
+import { EliminarUserModalComponent } from 'src/app/modals/eliminar-user-modal/eliminar-user-modal.component';
 
 @Component({
   selector: 'app-admin-screen',
@@ -12,16 +14,22 @@ export class AdminScreenComponent implements OnInit {
   // Variables y métodos del componente
   public name_user: string = "";
   public lista_admins: any[] = [];
+  public rol: string = "";
+  public token: string = "";
+
 
   constructor(
     public facadeService: FacadeService,
     private administradoresService: AdministradoresService,
     private router: Router,
+    public dialog: MatDialog
   ) { }
 
   ngOnInit(): void {
     // Lógica de inicialización aquí
     this.name_user = this.facadeService.getUserCompleteName();
+    this.rol = this.facadeService.getUserGroup();
+    this.token = this.facadeService.getSessionToken();
 
     // Obtenemos los administradores
     this.obtenerAdmins();
@@ -44,7 +52,29 @@ export class AdminScreenComponent implements OnInit {
   }
 
   public delete(idUser: number) {
+    // Administrador puede eliminar cualquier usuario
+    if (this.rol === 'administrador' ) {
+      //Si es administrador, cumple la condición, se puede eliminar
+      const dialogRef = this.dialog.open(EliminarUserModalComponent,{
+        data: {id: idUser, rol: 'administrador'}, //Se pasan valores a través del componente
+        height: '288px',
+        width: '328px',
+      });
 
+    dialogRef.afterClosed().subscribe(result => {
+      if(result.isDelete){
+        console.log("Administrador eliminado");
+        alert("Administrador eliminado correctamente.");
+        //Recargar página
+        window.location.reload();
+      }else{
+        alert("Administrador no se ha podido eliminar.");
+        console.log("No se eliminó el administrador");
+      }
+    });
+    }else{
+      alert("No tienes permisos para eliminar este administrador.");
+    }
   }
 
 }

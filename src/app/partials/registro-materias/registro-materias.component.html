@@ -1,0 +1,186 @@
+<div class="wrapper">
+  <div class="reg-shell">
+    <mat-card class="role-card">
+      <mat-card-header class="role-card-header">
+        <div class="actions-header-colum">
+          <ng-container *ngIf="!editar; else activo">
+            <mat-card-title class="title-card">Registro de materia</mat-card-title>
+            <mat-card-subtitle class="subtitle-card">
+              Llena el formulario con los datos solicitados
+            </mat-card-subtitle>
+          </ng-container>
+          <ng-template #activo>
+            <mat-card-title class="title-card">Editar materia</mat-card-title>
+            <mat-card-subtitle class="subtitle-card">
+              Modifica los datos de la materia seleccionada
+            </mat-card-subtitle>
+          </ng-template>
+        </div>
+
+        <!-- Botón regresar compartido -->
+        <div class="actions-row">
+          <button mat-icon-button class="back-btn" (click)="goBack()">
+            <mat-icon class="back-icon">arrow_back</mat-icon>
+          </button>
+        </div>
+      </mat-card-header>
+
+      <mat-card-content>
+        <div class="section-registro">
+          <div class="body-registro">
+            <div class="row mt-3 mb-3">
+              <div class="form-group col-12">
+                <label class="title-user" for="registro_materia">Ingresa los datos de la materia</label>
+              </div>
+            </div>
+
+            <!-- NRC -->
+            <mat-form-field class="mat-input" appearance="outline">
+              <mat-label>NRC</mat-label>
+              <!-- máscara sugerida: use mask='00000' o ajustar según tu librería -->
+              <input matInput [(ngModel)]="materia.nrc" name="nrc"
+                     placeholder="Ej. 12345"
+                     maxlength="6"
+                     pattern="[0-9]*"
+                     inputmode="numeric">
+            </mat-form-field>
+            <div *ngIf="errors.nrc" class="invalid-feedback">{{ errors.nrc }}</div>
+
+            <!-- Nombre de la materia -->
+            <mat-form-field class="mat-input" appearance="outline">
+              <mat-label>Nombre de la materia</mat-label>
+              <input matInput [(ngModel)]="materia.nombre_materia" name="nombre_materia"
+                     placeholder="Ej. Sistemas Operativos II"
+                     (keypress)="soloLetras($event)">
+            </mat-form-field>
+            <div *ngIf="errors.nombre" class="invalid-feedback">{{ errors.nombre_materia }}</div>
+
+            <!-- Sección -->
+            <mat-form-field class="mat-input" appearance="outline">
+              <mat-label>Sección</mat-label>
+              <input matInput [(ngModel)]="materia.seccion" name="seccion"
+                     placeholder="Ej. 001"
+                     maxlength="3"
+                     pattern="[0-9]*"
+                     inputmode="numeric">
+            </mat-form-field>
+            <div *ngIf="errors.seccion" class="invalid-feedback">{{ errors.seccion }}</div>
+            <div class="select-materias">
+            <div class="row mt-3 mb-3">
+              <div class="form-group col-12">
+                <label class="title-materias" for="tipo_usuario">Selecciona los días</label>
+              </div>
+            </div>
+            <!-- Días (checkboxes) -->
+            <div class="checkbox-group" *ngFor="let dia of dias; let i = index">
+              <mat-checkbox class="checkbox-item opc-sc" name="opsc" (change)="checkboxChange($event)" value="{{dia.value}}" [checked]="revisarSeleccion(dia.value)">
+                  <div class="d-checkbox-nombre">{{dia.nombre}}</div>
+              </mat-checkbox>
+            </div>
+            <div *ngIf="errors.dias_json" class="invalid-feedback">{{ errors.dias_json }}</div>
+            </div>
+
+            <!-- Hora inicio -->
+            <mat-form-field class="mat-input" appearance="outline">
+              <mat-label>Hora de inicio</mat-label>
+
+              <input
+                matInput
+                [ngxTimepicker]="inicioPicker"
+                readonly
+                placeholder="Selecciona hora de inicio"
+                [(ngModel)]="materia.hora_inicio"
+              >
+
+              <ngx-material-timepicker #inicioPicker></ngx-material-timepicker>
+            </mat-form-field>
+
+            <div *ngIf="errors.hora_inicio" class="invalid-feedback">
+              {{ errors.hora_inicio }}
+            </div>
+
+
+            <!-- Hora final -->
+            <mat-form-field class="mat-input" appearance="outline">
+              <mat-label>Hora de finalización</mat-label>
+
+              <input
+                matInput
+                [ngxTimepicker]="finalPicker"
+                readonly
+                placeholder="Selecciona hora final"
+                [(ngModel)]="materia.hora_fin"
+              >
+
+              <ngx-material-timepicker #finalPicker></ngx-material-timepicker>
+            </mat-form-field>
+
+            <div *ngIf="errors.hora_fin" class="invalid-feedback">
+              {{ errors.hora_fin }}
+            </div>
+
+            <!-- Salón -->
+            <mat-form-field class="mat-input" appearance="outline">
+              <mat-label>Salón</mat-label>
+              <input matInput [(ngModel)]="materia.salon" name="salon"
+                     placeholder="Ej. H-204"
+                     maxlength="15"
+                     (keypress)="soloAlfaNumericoYEspacio($event)">
+            </mat-form-field>
+            <div *ngIf="errors.salon" class="invalid-feedback">{{ errors.salon }}</div>
+
+            <!-- Programa educativo (mat-select con 3 opciones) -->
+            <mat-form-field class="mat-input" appearance="outline">
+              <mat-label>Programa educativo</mat-label>
+              <mat-select [(ngModel)]="materia.programa_educativo" name="programa_educativo" placeholder="Selecciona programa">
+                <mat-option [value]="'ingenieria_ciencias_computacion'">
+                  Ingeniería en Ciencias de la Computación
+                </mat-option>
+                <mat-option [value]="'licenciatura_ciencias_computacion'">
+                  Licenciatura en Ciencias de la Computación
+                </mat-option>
+                <mat-option [value]="'ingenieria_tecnologias_informacion'">
+                  Ingeniería en Tecnologías de la Información
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+            <div *ngIf="errors.programa_educativo" class="invalid-feedback">{{ errors.programa_eduactivo }}</div>
+
+            <mat-form-field class="mat-input" appearance="outline">
+              <mat-label>Maestro asignado</mat-label>
+              <mat-select [(ngModel)]="materia.profesor" name="profesor">
+                <mat-option *ngFor="let maestro of maestros" [value]="maestro.id">
+                  {{ maestro.nombre_completo }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+            <div *ngIf="errors.profesor" class="invalid-feedback">{{ errors.profesor }}</div>
+
+            <!-- Créditos -->
+            <mat-form-field class="mat-input" appearance="outline">
+              <mat-label>Créditos</mat-label>
+              <input matInput [(ngModel)]="materia.creditos" name="creditos"
+                     placeholder="Ej. 4"
+                     maxlength="2"
+                     pattern="[0-9]*"
+                     inputmode="numeric">
+            </mat-form-field>
+            <div *ngIf="errors.creditos" class="invalid-feedback">{{ errors.creditos }}</div>
+
+            <!-- Botones -->
+            <div class="section-buttons mt-3">
+              <button class="btn btn-danger" (click)="goBack()">Cancelar</button>
+              <button *ngIf="!editar" class="btn btn-primary" type="submit" (click)="registrar()">
+                Registrar materia
+              </button>
+              <button *ngIf="editar" class="btn btn-primary" type="submit" (click)="actualizar()">
+                Actualizar materia
+              </button>
+            </div>
+
+          </div>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>

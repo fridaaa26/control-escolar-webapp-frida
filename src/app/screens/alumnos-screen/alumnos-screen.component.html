@@ -29,7 +29,7 @@
         <ng-container *ngIf="lista_alumnos.length > 0; else noData">
           <div class="table-scroll-wrapper">
             <div class="mat-elevation-z8">
-            <table mat-table [dataSource]="dataSource" matSort (matSortChange)="announceSortChange($event)" style="min-width: 1200px; width: 100%;">
+            <table mat-table [dataSource]="dataSource" matSort #tableSortMatSort="matSort" (matSortChange)="announceSortChange($event)" style="min-width: 1200px; width: 100%;">
                 <!-- 1ra columna -->
                 <ng-container matColumnDef="matricula">
                   <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Ordenar por matrícula">Matrícula</th>
@@ -96,7 +96,7 @@
               </table>
             </div>
             <!-- Colocamos la paginación de la tabla -->
-            <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons
+            <mat-paginator #tableMatPaginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons
               aria-label="Select page of periodic elements" style="min-width: 1200px; width: 100%;">
             </mat-paginator>
           </div>

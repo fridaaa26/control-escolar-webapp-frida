@@ -151,4 +151,5 @@ export class RegistroAdminComponent implements OnInit {
       event.preventDefault();
     }
   }
+
 }

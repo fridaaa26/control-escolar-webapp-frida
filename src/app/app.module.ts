@@ -15,6 +15,7 @@ import { DashboardLayoutComponent } from './layouts/dashboard-layout/dashboard-l
 import { RegistroAdminComponent } from './partials/registro-admin/registro-admin.component';
 import { RegistroAlumnosComponent } from './partials/registro-alumnos/registro-alumnos.component';
 import { RegistroMaestrosComponent } from './partials/registro-maestros/registro-maestros.component';
+import { RegistroMateriasComponent } from './partials/registro-materias/registro-materias.component';
 
 //Angular material
 import {MatCardModule} from '@angular/material/card';
@@ -29,6 +30,8 @@ import {MatCheckboxModule} from '@angular/material/checkbox';
 import {MatSelectModule} from '@angular/material/select';
 import {MatTableModule} from '@angular/material/table';
 import {MatSortModule } from '@angular/material/sort';
+import {MatDialogModule} from '@angular/material/dialog';
+import { NgxMaterialTimepickerModule } from 'ngx-material-timepicker';
 // Paginación
 import {MatPaginatorIntl, MatPaginatorModule} from '@angular/material/paginator';
 //Para el paginator en español
@@ -40,6 +43,9 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 //Ngx-cookie-service
 import { CookieService } from 'ngx-cookie-service';
 
+// Modulo para las gráficas
+import { NgChartsModule } from 'ng2-charts';
+
 // Third Party Modules
 import { NgxMaskDirective, provideNgxMask } from 'ngx-mask';
 import { HomeScreenComponent } from './screens/home-screen/home-screen.component';
@@ -48,6 +54,10 @@ import { AlumnosScreenComponent } from './screens/alumnos-screen/alumnos-screen.
 import { MaestrosScreenComponent } from './screens/maestros-screen/maestros-screen.component';
 import { NavbarUserComponent } from './partials/navbar-user/navbar-user.component';
 import { SidebarComponent } from './partials/sidebar/sidebar.component';
+import { EliminarUserModalComponent } from './modals/eliminar-user-modal/eliminar-user-modal.component';
+import { GraficasScreensComponent } from './screens/graficas-screens/graficas-screens.component';
+import { MateriasScreenComponent } from './screens/materias-screen/materias-screen.component';
+import { EditarMateriasModalComponent } from './modals/editar-materias-modal/editar-materias-modal.component';
 
 @NgModule({
   declarations: [
@@ -64,7 +74,12 @@ import { SidebarComponent } from './partials/sidebar/sidebar.component';
     AlumnosScreenComponent,
     MaestrosScreenComponent,
     NavbarUserComponent,
-    SidebarComponent
+    SidebarComponent,
+    EliminarUserModalComponent,
+    GraficasScreensComponent,
+    MateriasScreenComponent,
+    RegistroMateriasComponent,
+    EditarMateriasModalComponent,
   ],
   imports: [
     BrowserModule,
@@ -86,7 +101,10 @@ import { SidebarComponent } from './partials/sidebar/sidebar.component';
     MatSidenavModule,
     MatTableModule,
     MatPaginatorModule,
-    MatSortModule
+    MatSortModule,
+    MatDialogModule,
+    NgChartsModule,
+    NgxMaterialTimepickerModule
   ],
   providers: [
     CookieService,

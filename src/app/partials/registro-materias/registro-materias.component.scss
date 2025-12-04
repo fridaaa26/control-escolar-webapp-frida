@@ -1,0 +1,186 @@
+/* =========================
+   CONTENEDOR GENERAL
+   ========================= */
+.wrapper {
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  background-image: url('/assets/images/fondo-azul.jpg');
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+/* Para evitar márgenes en body */
+body {
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+/* Shell para centrar card */
+.reg-shell {
+  width: 100%;
+  padding: clamp(16px, 3vw, 28px);
+  display: grid;
+  gap: 20px;
+}
+
+/* =========================
+   CARD PRINCIPAL
+   ========================= */
+.role-card {
+  width: min(100%, 980px);
+  margin-inline: auto;
+  background: #fff;
+  border-radius: 12px;
+}
+
+/* Encabezado de la card */
+.role-card-header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding: 12px 10px 0 10px;
+}
+
+.actions-header-colum {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  width: 100%;
+}
+
+.title-card {
+  font-family: Nexa-Bold;
+  font-size: clamp(1.5rem, 1.2rem + 1vw, 2rem);
+}
+
+.subtitle-card {
+  font-family: Nexa-Light;
+  color: #000;
+  margin-top: 6px;
+}
+
+.actions-row {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.back-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 30%;
+}
+
+.back-icon {
+  font-size: 1.9rem;
+  color: #0092B8;
+}
+
+/* =========================
+   FORMULARIO INTERNO
+   ========================= */
+.section-registro{
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.body-registro {
+  width: 100%;
+  padding-top: 2.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2.2rem;
+}
+
+.title-user{
+  font-size: 28px;
+  font-family: Nexa-Bold;
+  color: #231F20;
+  letter-spacing: 2px;
+  text-transform: capitalize;
+}
+
+mat-form-field {
+  width: 90% !important;
+  margin-left: 5%;
+  text-align: left !important;
+}
+
+.invalid-feedback,
+.feedback-error {
+  margin-left: 2.5rem;
+  color: #b00020;
+  font-size: 0.9rem;
+}
+
+.section-buttons{
+  width: 90%;
+  margin-left: 5%;
+  padding-bottom: 3rem;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.btn-primary {
+  width: 208px;
+  height: 48px;
+  background-color: #0092B8 !important;
+  border-radius: 8px;
+  font-family: Nexa-Bold;
+  color: #fff;
+}
+
+.btn-primary:hover {
+  background-color: #017895 !important;
+}
+
+.btn-danger{
+  width: 208px;
+  height: 48px;
+  background-color: #c0392b;
+  border-radius: 8px;
+  font-family: Nexa-Bold;
+  color: #fff;
+}
+
+
+/* =========================
+   MOBILE
+   ========================= */
+@media (max-width: 700px) {
+
+  .role-card {
+    padding: 12px;
+  }
+
+  .title-user {
+    font-size: clamp(1.5rem, 1.2rem + 1vw, 2rem);
+    text-align: center;
+    margin-bottom: 0;
+  }
+
+  mat-form-field {
+    width: 100% !important;
+    margin-left: 0;
+  }
+
+  .section-buttons {
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .btn-primary,
+  .btn-danger {
+    width: 100%;
+    font-size: 14px;
+  }
+}

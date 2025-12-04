@@ -378,3 +378,61 @@
   font-size: 1.08rem;
   padding: 1rem 1.2rem;
 }
+
+/* =====================
+   REGISTRO DROPDOWN
+   ===================== */
+
+/* El botón principal debe ser un bloque clickeable */
+.registro-main {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  justify-content: space-between;
+}
+
+/* Flecha */
+.registro-main .arrow {
+  margin-left: auto;
+  font-size: 1.3rem;
+}
+
+/* Submenú dentro del sidebar */
+.registro-submenu {
+  list-style: none;
+  padding: 0;
+  margin: 0.3rem 0 0 0;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+/* Items del submenú */
+.submenu-item {
+  padding: 0.5rem 1.2rem;
+  cursor: pointer;
+  color: #e4ecfa;
+  font-size: 0.92rem;
+  display: block;
+  transition: background 0.18s;
+}
+
+.submenu-item:hover {
+  background-color: rgba(255,255,255,0.06);
+}
+
+/* Evita el desplazamiento hacia la derecha */
+.registro-item {
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+/* VERSIÓN MÓVIL */
+.mobile-dropdown {
+  list-style: none;
+  padding-left: 40px;
+  background-color: rgba(255,255,255,0.08);
+}
+
+.mobile-dropdown .dropdown-item {
+  padding: 10px 0;
+}

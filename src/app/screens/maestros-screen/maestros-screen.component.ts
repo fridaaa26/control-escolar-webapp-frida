@@ -6,6 +6,8 @@ import { FacadeService } from 'src/app/service/facade.service';
 import { MaestrosService } from 'src/app/service/maestros.service';
 import { MatSort, Sort } from '@angular/material/sort';
 import { LiveAnnouncer } from '@angular/cdk/a11y';
+import { MatDialog } from '@angular/material/dialog';
+import { EliminarUserModalComponent } from 'src/app/modals/eliminar-user-modal/eliminar-user-modal.component';
 
 @Component({
   selector: 'app-maestros-screen',
@@ -19,20 +21,21 @@ export class MaestrosScreenComponent implements OnInit, AfterViewInit {
   public token: string = "";
   public lista_maestros: any[] = [];
 
-  displayedColumns: string[] = ['id_trabajador', 'nombre', 'email', 'fecha_nacimiento', 'telefono', 'rfc', 'cubiculo', 'area_investigacion', 'editar', 'eliminar'];
+  displayedColumns: string[] = ['id_trabajador', 'nombre', 'email', 'fecha_nacimiento', 'telefono', 'rfc', 'cubiculo', 'area_investigacion'];
 
   // Inicializamos dataSource sin datos, luego asignamos data
   dataSource = new MatTableDataSource<DatosUsuario>([]);
 
   // Usar non-null assertion para evitar errores con strictTypes
-  @ViewChild(MatPaginator) paginator!: MatPaginator;
-  @ViewChild(MatSort) sort!: MatSort;
+  @ViewChild('tableSortMatSort') sort?: MatSort;
+  @ViewChild('tableMatPaginator') paginator?: MatPaginator;
 
   constructor(
     public facadeService: FacadeService,
     public maestrosService: MaestrosService,
     private router: Router,
-    private _liveAnnouncer: LiveAnnouncer
+    private _liveAnnouncer: LiveAnnouncer,
+    public dialog: MatDialog
   ) { }
 
   ngOnInit(): void {
@@ -43,6 +46,10 @@ export class MaestrosScreenComponent implements OnInit, AfterViewInit {
       this.router.navigate(["/"]);
     }
     this.obtenerMaestros();
+
+    if (this.rol === 'administrador') {
+      this.displayedColumns.push('editar', 'eliminar');
+    }
 
     // Configuramos cómo se ordenan columnas especiales (nombre concatenado y fecha)
     this.dataSource.sortingDataAccessor = (item: any, property: string) => {
@@ -68,8 +75,14 @@ export class MaestrosScreenComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit() {
     // Aseguramos que el paginator y el sort quedan enlazados al dataSource actual
-    this.dataSource.paginator = this.paginator;
-    this.dataSource.sort = this.sort;
+    setTimeout(() => {
+      if (this.paginator) {
+        this.dataSource.paginator = this.paginator;
+      }
+      if (this.sort) {
+        this.dataSource.sort = this.sort;
+      }
+    }, 0);
   }
 
   // Consumimos el servicio para obtener los maestros
@@ -86,6 +99,16 @@ export class MaestrosScreenComponent implements OnInit, AfterViewInit {
             usuario.email = usuario.user?.email ?? '';
           });
           this.dataSource.data = this.lista_maestros as DatosUsuario[];
+
+          // Asignar paginator y sort después de que los datos se carguen
+          setTimeout(() => {
+            if (this.paginator) {
+              this.dataSource.paginator = this.paginator;
+            }
+            if (this.sort) {
+              this.dataSource.sort = this.sort;
+            }
+          }, 0);
         }
       }, (error) => {
         console.error("Error al obtener la lista de maestros: ", error);
@@ -95,10 +118,34 @@ export class MaestrosScreenComponent implements OnInit, AfterViewInit {
   }
 
   public goEditar(idUser: number) {
-    this.router.navigate(["registro-usuarios/maestros/" + idUser]);
+    this.router.navigate(["registro-usuarios/maestro/" + idUser]);
   }
 
   public delete(idUser: number) {
+
+    // Administrador puede eliminar cualquier maestro
+    if (this.rol === 'administrador' ) {
+      //Si es administrador o es maestro, es decir, cumple la condición, se puede eliminar
+      const dialogRef = this.dialog.open(EliminarUserModalComponent,{
+        data: {id: idUser, rol: 'maestro'}, //Se pasan valores a través del componente
+        height: '288px',
+        width: '328px',
+      });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if(result.isDelete){
+        console.log("Maestro eliminado");
+        alert("Maestro eliminado correctamente.");
+        //Recargar página
+        window.location.reload();
+      }else{
+        alert("Maestro no se ha podido eliminar.");
+        console.log("No se eliminó el maestro");
+      }
+    });
+    }else{
+      alert("No tienes permisos para eliminar este maestro.");
+    }
   }
 
   applyFilter(event: Event) {
@@ -107,7 +154,7 @@ export class MaestrosScreenComponent implements OnInit, AfterViewInit {
   }
 
   // Método para anunciar cambios de orden (accesibilidad)
-  announceSortChange(sortState: Sort) {
+ announceSortChange(sortState: Sort) {
     if (sortState.direction) {
       this._liveAnnouncer.announce(`Ordenado ${sortState.direction}`);
     } else {
